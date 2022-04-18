@@ -1,0 +1,3574 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{SageMakerAutopilotDataExplorationNotebook\_1}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{amazon-sagemaker-autopilot-data-exploration-report}{%
+\section{Amazon SageMaker Autopilot Data Exploration
+Report}\label{amazon-sagemaker-autopilot-data-exploration-report}}
+
+This report contains insights about the dataset you provided as input to
+the AutoML job. This data report was generated by \textbf{second} AutoML
+job. To check for any issues with your data and possible improvements
+that can be made to it, consult the sections below for guidance. You can
+use information about the predictive power of each feature in the
+\textbf{Data Sample} section and from the correlation matrix in the
+\textbf{Cross Column Statistics} section to help select a subset of the
+data that is most significant for making predictions.
+
+\textbf{Note}: SageMaker Autopilot data reports are subject to change
+and updates. It is not recommended to parse the report using automated
+tools, as they may be impacted by such changes.
+
+\hypertarget{dataset-summary}{%
+\subsection{Dataset Summary}\label{dataset-summary}}
+
+Dataset Properties
+
+Rows
+
+Columns
+
+Duplicate rows
+
+Target column
+
+Missing target values
+
+Invalid target values
+
+Detected problem type
+
+828096
+
+51
+
+0.00\%
+
+class
+
+0.32\%
+
+0.32\%
+
+BinaryClassification
+
+Detected Column Types
+
+Numeric
+
+Categorical
+
+Text
+
+Datetime
+
+Sequence
+
+Column Count
+
+43
+
+5
+
+0
+
+0
+
+0
+
+Percentage
+
+86.00\%
+
+10.00\%
+
+0.00\%
+
+0.00\%
+
+0.00\%
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{report-contents}{%
+\subsection{Report Contents}\label{report-contents}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Section \ref{target-analysis}
+\item
+  Section \ref{data-sample}
+\item
+  Section \ref{duplicate-rows}
+\item
+  Section \ref{cross-column-statistics}
+\item
+  Section \ref{anomalous-rows}
+\item
+  Section \ref{missing-values}
+\item
+  Section \ref{cardinality}
+\item
+  Section \ref{descriptive-stats}
+\item ~
+  \hypertarget{definitions}{%
+  \subsection{\texorpdfstring{Section \ref{definitions}}{ }}\label{definitions}}
+\end{enumerate}
+
+    \hypertarget{target-analysis}{%
+\subsubsection{Target Analysis}\label{target-analysis}}
+
+The column \textbf{class} is used as the target column. See the
+distribution of values (labels) in the target column below:
+
+Number of Classes
+
+Invalid Percentage
+
+Missing Percentage
+
+2
+
+0.00\%
+
+0.00\%
+
+Target Label
+
+Frequency Percentage
+
+Label Count
+
+0
+
+88.04\%
+
+729072
+
+1
+
+11.96\%
+
+99024
+
+Histogram of the target column labels.
+
+    \hypertarget{data-sample}{%
+\subsection{Data Sample}\label{data-sample}}
+
+The following table contains a random sample of \textbf{10} rows from
+the dataset. The top two rows provide the type and prediction power of
+each column. Verify the input headers correctly align with the columns
+of the dataset sample. If they are incorrect, update the header names of
+your input dataset in Amazon Simple Storage Service (Amazon S3).
+
+class
+
+person
+
+per\_capita\_income\_zipcode
+
+yearly\_income\_person
+
+user
+
+total\_debt
+
+zipcode
+
+longitude
+
+city
+
+latitude
+
+fico\_score
+
+merchant\_state
+
+zip
+
+merchant\_city
+
+credit\_limit
+
+birth\_year
+
+mcc
+
+merchant\_name
+
+current\_age
+
+cvv
+
+state
+
+Online Transaction
+
+retirement\_age
+
+year
+
+Swipe Transaction
+
+amount
+
+num\_credit\_cards
+
+birth\_month
+
+acct\_open\_year
+
+hour
+
+acct\_open\_temp\_month
+
+card
+
+expires\_temp\_month
+
+year\_pin\_last\_changed
+
+expires\_year
+
+card\_index
+
+Female
+
+Male
+
+Chip Transaction
+
+day
+
+Debit
+
+Debit (Prepaid)
+
+cards\_issued
+
+minutes
+
+YES
+
+NO
+
+month
+
+errors
+
+card\_on\_dark\_web
+
+Credit
+
+Prediction Power
+
+-
+
+1
+
+0.966832
+
+0.965739
+
+0.951813
+
+0.945405
+
+0.938073
+
+0.935481
+
+0.925731
+
+0.925726
+
+0.910731
+
+0.856931
+
+0.85187
+
+0.844752
+
+0.815838
+
+0.773683
+
+0.717642
+
+0.716066
+
+0.709877
+
+0.698835
+
+0.698689
+
+0.607887
+
+0.501087
+
+0.467241
+
+0.424083
+
+0.397196
+
+0.381851
+
+0.343419
+
+0.308273
+
+0.251772
+
+0.250927
+
+0.190747
+
+0.187099
+
+0.186669
+
+0.185986
+
+0.153566
+
+0.144179
+
+0.128397
+
+0.128397
+
+0.103891
+
+0.0890698
+
+0.0745843
+
+0.0699255
+
+0.0627374
+
+0.044515
+
+0.0336148
+
+0.0336148
+
+0.00448231
+
+0
+
+0
+
+0
+
+Column Types
+
+-
+
+numeric
+
+categorical
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+categorical
+
+numeric
+
+numeric
+
+categorical
+
+numeric
+
+categorical
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+categorical
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+numeric
+
+-
+
+-
+
+numeric
+
+43132
+
+0
+
+648282
+
+Dustin Williams
+
+21159.0
+
+43144
+
+1823
+
+54157
+
+3580
+
+-71.74
+
+Franconia
+
+44.22
+
+628
+
+NH
+
+3254.0
+
+Moultonborough
+
+32.0
+
+1972
+
+5812
+
+-2744911404133435018
+
+47
+
+340
+
+NH
+
+0
+
+63
+
+2017
+
+0
+
+10.74
+
+3
+
+11
+
+2002
+
+11
+
+1
+
+0
+
+10
+
+2009
+
+2024
+
+0
+
+0
+
+1
+
+1
+
+15
+
+0
+
+1
+
+2
+
+51
+
+1
+
+0
+
+5
+
+False
+
+No
+
+0
+
+104209
+
+0
+
+920548
+
+Vicente Gao
+
+15195.0
+
+30983
+
+1852
+
+10019
+
+74477
+
+-95.38
+
+Wagoner
+
+35.95
+
+757
+
+OK
+
+74477.0
+
+Wagoner
+
+13600.0
+
+1951
+
+7230
+
+-5049460428029107883
+
+69
+
+740
+
+OK
+
+0
+
+70
+
+2002
+
+1
+
+35.76
+
+5
+
+2
+
+2007
+
+15
+
+4
+
+3
+
+6
+
+2011
+
+2021
+
+0
+
+0
+
+1
+
+0
+
+7
+
+0
+
+0
+
+1
+
+47
+
+0
+
+1
+
+8
+
+False
+
+No
+
+1
+
+82769
+
+0
+
+800666
+
+Danielle Stewart
+
+14465.0
+
+29496
+
+1526
+
+49681
+
+73114
+
+-97.51
+
+Oklahoma City
+
+35.46
+
+704
+
+AR
+
+72703.0
+
+Fayetteville
+
+5900.0
+
+1967
+
+7393
+
+-8998298538406178334
+
+52
+
+747
+
+OK
+
+0
+
+65
+
+2002
+
+1
+
+24.15
+
+5
+
+7
+
+2009
+
+15
+
+8
+
+3
+
+10
+
+2010
+
+2022
+
+4
+
+1
+
+0
+
+0
+
+22
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+5
+
+False
+
+No
+
+1
+
+60248
+
+0
+
+225064
+
+Alfred King
+
+11844.0
+
+24155
+
+449
+
+2870
+
+78586
+
+-97.63
+
+San Benito
+
+26.13
+
+802
+
+TX
+
+78586.0
+
+San Benito
+
+20417.0
+
+1961
+
+5541
+
+3397452747792109772
+
+58
+
+262
+
+TX
+
+0
+
+71
+
+2016
+
+0
+
+-77.0
+
+3
+
+5
+
+2016
+
+21
+
+6
+
+1
+
+6
+
+2016
+
+2022
+
+1
+
+0
+
+1
+
+1
+
+31
+
+1
+
+0
+
+2
+
+19
+
+1
+
+0
+
+7
+
+False
+
+No
+
+0
+
+30515
+
+0
+
+499389
+
+Wayne Hughes
+
+15325.0
+
+31244
+
+1933
+
+51924
+
+56354
+
+-95.29
+
+Miltona
+
+46.04
+
+713
+
+MN
+
+56362.0
+
+Paynesville
+
+1726.0
+
+1955
+
+5912
+
+-5467922351692495955
+
+64
+
+247
+
+MN
+
+0
+
+66
+
+1998
+
+1
+
+73.02
+
+4
+
+7
+
+2009
+
+13
+
+11
+
+2
+
+2
+
+2014
+
+2024
+
+1
+
+0
+
+1
+
+0
+
+4
+
+1
+
+0
+
+2
+
+12
+
+0
+
+1
+
+9
+
+False
+
+No
+
+0
+
+37657
+
+0
+
+464712
+
+Emiliano Wood
+
+30325.0
+
+41763
+
+880
+
+2279
+
+27713
+
+-78.91
+
+Durham
+
+35.98
+
+714
+
+Germany
+
+0.0
+
+Berlin
+
+45854.0
+
+1936
+
+5499
+
+-1288082279022882052
+
+83
+
+77
+
+NC
+
+0
+
+63
+
+2012
+
+1
+
+3.61
+
+5
+
+3
+
+2004
+
+8
+
+9
+
+3
+
+8
+
+2013
+
+2023
+
+3
+
+0
+
+1
+
+0
+
+28
+
+1
+
+0
+
+2
+
+24
+
+1
+
+0
+
+11
+
+False
+
+No
+
+0
+
+29979
+
+0
+
+814058
+
+Danielle Stewart
+
+14465.0
+
+29496
+
+1526
+
+49681
+
+73114
+
+-97.51
+
+Oklahoma City
+
+35.46
+
+704
+
+OK
+
+73127.0
+
+Oklahoma City
+
+8300.0
+
+1967
+
+5300
+
+1913477460590765860
+
+52
+
+392
+
+OK
+
+0
+
+65
+
+2011
+
+1
+
+9.51
+
+5
+
+7
+
+2003
+
+15
+
+10
+
+1
+
+9
+
+2011
+
+2020
+
+1
+
+1
+
+0
+
+0
+
+13
+
+0
+
+0
+
+1
+
+39
+
+0
+
+1
+
+5
+
+False
+
+No
+
+1
+
+74414
+
+0
+
+272043
+
+Davis Jenkins
+
+18076.0
+
+36853
+
+482
+
+112139
+
+52601
+
+-91.12
+
+Burlington
+
+40.8
+
+834
+
+FL
+
+32812.0
+
+Orlando
+
+69.0
+
+1971
+
+3509
+
+-112121233619748226
+
+48
+
+983
+
+IA
+
+0
+
+67
+
+2007
+
+1
+
+126.78
+
+5
+
+6
+
+2013
+
+13
+
+4
+
+0
+
+5
+
+2013
+
+2024
+
+2
+
+0
+
+1
+
+0
+
+5
+
+0
+
+1
+
+1
+
+11
+
+1
+
+0
+
+8
+
+False
+
+No
+
+0
+
+    \hypertarget{duplicate-rows}{%
+\subsection{Duplicate Rows}\label{duplicate-rows}}
+
+No duplicate rows were found when testing a random sample of 10000 rows
+from the dataset.
+
+    \hypertarget{cross-column-statistics}{%
+\subsection{Cross Column Statistics}\label{cross-column-statistics}}
+
+Amazon SageMaker Autopilot calculates Pearson's correlation between
+columns in your dataset. Removing highly correlated columns can reduce
+overfitting and training time. Pearson's correlation is in the range
+{[}-1, 1{]} where 0 implies no correlation, 1 implies perfect
+correlation, and -1 implies perfect inverse correlation.
+
+The full correlation matrix between the 10 most predictive numeric
+features is presented below.
+
+Cross column correlation for numeric features
+
+    \hypertarget{anomalous-rows}{%
+\subsubsection{Anomalous Rows}\label{anomalous-rows}}
+
+Anomalous rows are detected using the Isolation forest algorithm on a
+sample of \textbf{10000} randomly chosen rows after basic preprocessing.
+The isolation forest algorithm associates an anomaly score to each row
+of the dataset it is trained on. Rows with negative anomaly scores are
+usually considered anomalous and rows with positive anomaly scores are
+considered non-anomalous. When investigating an anomalous row, look for
+any unusual values - in particular any that might have resulted from
+errors in the gathering and processing of data. Deciphering whether a
+row is indeed anomalous, contains errors, or is in fact valid requires
+domain knowledge and application of business logic.
+
+Inspect the rows below, to see if any of those are anomalous. A subset
+of rows is presented below. Anomaly score is presented as the left most
+column; Smaller values indicate a higher chance that the row is
+anomalous.
+
+Anomaly Scores
+
+user
+
+card
+
+year
+
+month
+
+day
+
+amount
+
+merchant\_name
+
+merchant\_city
+
+merchant\_state
+
+zip
+
+mcc
+
+errors
+
+card\_index
+
+cvv
+
+cards\_issued
+
+credit\_limit
+
+year\_pin\_last\_changed
+
+card\_on\_dark\_web
+
+person
+
+current\_age
+
+retirement\_age
+
+birth\_year
+
+birth\_month
+
+city
+
+state
+
+zipcode
+
+latitude
+
+longitude
+
+per\_capita\_income\_zipcode
+
+yearly\_income\_person
+
+total\_debt
+
+fico\_score
+
+num\_credit\_cards
+
+hour
+
+minutes
+
+acct\_open\_temp\_month
+
+acct\_open\_year
+
+expires\_temp\_month
+
+expires\_year
+
+NO
+
+YES
+
+Chip Transaction
+
+Online Transaction
+
+Swipe Transaction
+
+Female
+
+Male
+
+Credit
+
+Debit
+
+Debit (Prepaid)
+
+3151
+
+-0.102217
+
+73783
+
+461
+
+0
+
+2015
+
+11
+
+15
+
+29.06
+
+5232804510082391016
+
+ONLINE
+
+0.0
+
+5814
+
+False
+
+3
+
+112
+
+2
+
+140.0
+
+2017
+
+No
+
+Marianna Cruz
+
+86
+
+65
+
+1933
+
+6
+
+Kaneohe
+
+HI
+
+96744
+
+21.41
+
+-157.79
+
+24516.0
+
+49529
+
+1385
+
+689
+
+6
+
+13
+
+0
+
+7
+
+2017
+
+6
+
+2021
+
+1
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+5217
+
+-0.095324
+
+114324
+
+1613
+
+2
+
+2016
+
+2
+
+2
+
+93.57
+
+-4282466774399734331
+
+ONLINE
+
+0.0
+
+4829
+
+False
+
+0
+
+912
+
+2
+
+78.0
+
+2020
+
+No
+
+Reed Ortiz
+
+36
+
+65
+
+1984
+
+1
+
+Mesa
+
+AZ
+
+85202
+
+33.38
+
+-111.87
+
+21053.0
+
+42927
+
+132343
+
+687
+
+4
+
+10
+
+16
+
+2
+
+2020
+
+12
+
+2022
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+6217
+
+-0.093007
+
+96317
+
+238
+
+4
+
+2014
+
+3
+
+29
+
+122.45
+
+1913477460590765860
+
+ONLINE
+
+0.0
+
+5300
+
+False
+
+2
+
+895
+
+1
+
+74.0
+
+2020
+
+No
+
+Aubree Howard
+
+35
+
+57
+
+1984
+
+6
+
+Solon
+
+IA
+
+52333
+
+41.8
+
+-91.49
+
+29059.0
+
+59248
+
+173887
+
+725
+
+5
+
+8
+
+50
+
+2
+
+2020
+
+2
+
+2020
+
+1
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+2175
+
+-0.090025
+
+31085
+
+194
+
+0
+
+2007
+
+12
+
+29
+
+418.0
+
+1715299929786123066
+
+ONLINE
+
+0.0
+
+3722
+
+False
+
+1
+
+521
+
+2
+
+13600.0
+
+2007
+
+No
+
+Martin Reed
+
+37
+
+71
+
+1982
+
+6
+
+Nashville
+
+TN
+
+37221
+
+36.17
+
+-86.78
+
+29868.0
+
+60897
+
+85771
+
+850
+
+3
+
+20
+
+28
+
+6
+
+2007
+
+2
+
+2021
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+1
+
+0
+
+0
+
+1571
+
+-0.089662
+
+78584
+
+1490
+
+6
+
+2002
+
+12
+
+12
+
+112.86
+
+6193615365914861496
+
+Tokyo
+
+Japan
+
+0.0
+
+5094
+
+False
+
+4
+
+900
+
+2
+
+14600.0
+
+2014
+
+No
+
+Maliyah Morales
+
+75
+
+65
+
+1944
+
+12
+
+Tacoma
+
+WA
+
+98404
+
+47.2
+
+-122.4
+
+16941.0
+
+11410
+
+0
+
+812
+
+7
+
+4
+
+51
+
+1
+
+2005
+
+4
+
+2020
+
+0
+
+1
+
+0
+
+0
+
+1
+
+1
+
+0
+
+1
+
+0
+
+0
+
+1136
+
+-0.089494
+
+117340
+
+729
+
+6
+
+2010
+
+7
+
+12
+
+4.87
+
+9057735476014445185
+
+ONLINE
+
+0.0
+
+5311
+
+False
+
+7
+
+805
+
+2
+
+27817.0
+
+2019
+
+No
+
+Hallie Perry
+
+61
+
+69
+
+1958
+
+9
+
+Honolulu
+
+HI
+
+96825
+
+21.3
+
+-157.85
+
+30410.0
+
+62005
+
+149968
+
+651
+
+9
+
+1
+
+8
+
+10
+
+2019
+
+3
+
+2023
+
+0
+
+1
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+1
+
+0
+
+2009
+
+-0.089392
+
+52471
+
+1918
+
+1
+
+2007
+
+8
+
+15
+
+349.0
+
+-8566951830324093739
+
+ONLINE
+
+0.0
+
+3640
+
+False
+
+1
+
+68
+
+1
+
+13900.0
+
+2003
+
+No
+
+Ariyah Bell
+
+37
+
+66
+
+1982
+
+7
+
+Bothell
+
+WA
+
+98021
+
+47.79
+
+-122.2
+
+33226.0
+
+67747
+
+76650
+
+804
+
+3
+
+7
+
+8
+
+10
+
+2003
+
+8
+
+2020
+
+0
+
+1
+
+0
+
+1
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+4254
+
+-0.088381
+
+73819
+
+461
+
+0
+
+2015
+
+11
+
+16
+
+171.6
+
+1913477460590765860
+
+ONLINE
+
+0.0
+
+5300
+
+False
+
+3
+
+112
+
+2
+
+140.0
+
+2017
+
+No
+
+Marianna Cruz
+
+86
+
+65
+
+1933
+
+6
+
+Kaneohe
+
+HI
+
+96744
+
+21.41
+
+-157.79
+
+24516.0
+
+49529
+
+1385
+
+689
+
+6
+
+14
+
+28
+
+7
+
+2017
+
+6
+
+2021
+
+1
+
+0
+
+0
+
+1
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+5787
+
+-0.088004
+
+75120
+
+61
+
+6
+
+2015
+
+5
+
+1
+
+405.02
+
+-8770902858380406398
+
+Ravensdale
+
+WA
+
+98051.0
+
+5300
+
+False
+
+5
+
+141
+
+1
+
+29734.0
+
+2017
+
+No
+
+Nathalie Faraday
+
+63
+
+58
+
+1957
+
+2
+
+Black Diamond
+
+WA
+
+98010
+
+47.32
+
+-121.99
+
+32697.0
+
+56635
+
+13015
+
+786
+
+8
+
+13
+
+21
+
+12
+
+2017
+
+5
+
+2020
+
+0
+
+1
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+0
+
+9656
+
+-0.087443
+
+58094
+
+908
+
+2
+
+2010
+
+12
+
+31
+
+122.16
+
+4796006601552743675
+
+ONLINE
+
+0.0
+
+5732
+
+False
+
+0
+
+946
+
+2
+
+46.0
+
+2010
+
+No
+
+Kylan Murphy
+
+45
+
+61
+
+1975
+
+1
+
+Humble
+
+TX
+
+77346
+
+29.99
+
+-95.26
+
+32943.0
+
+67170
+
+114251
+
+489
+
+3
+
+7
+
+31
+
+4
+
+2004
+
+4
+
+2020
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+0
+
+0
+
+1
+
+    \hypertarget{missing-values}{%
+\subsubsection{Missing Values}\label{missing-values}}
+
+Within the data sample, the following columns contained missing values,
+such as: \texttt{nan}, white spaces, or empty fields.
+
+SageMaker Autopilot will attempt to fill in missing values using various
+techniques. For example, missing values can be replaced with a new
+`unknown' category for \texttt{Categorical} features and missing
+\texttt{Numerical} values can be replaced with the \textbf{mean} or
+\textbf{median} of the column.
+
+We found \textbf{1 of the 51} of the columns contained missing values.
+The following table shows the \textbf{1} columns with the highest
+percentage of missing values.
+
+💡 Suggested Action Items - Investigate the governance of the training
+dataset. Do you expect this many missing values? Are you able to fill in
+the missing values with real data? - Use domain knowledge to define an
+appropriate default value for the feature. Either: - Replace all missing
+values with the new default value in your dataset in Amazon S3. - Add a
+step to the feature pre-processing pipeline to fill missing values, for
+example with a
+\href{https://scikit-learn.org/stable/modules/generated/sklearn.impute.SimpleImputer.html}{sklearn.impute.SimpleImputer}.
+
+\% of Missing Values
+
+merchant\_state
+
+15.8\%
+
+    \hypertarget{cardinality}{%
+\subsubsection{Cardinality}\label{cardinality}}
+
+For \texttt{String} features, it is important to count the number of
+unique values to determine whether to treat a feature as
+\texttt{Categorical} or \texttt{Text} and then processes the feature
+according to its type.
+
+For example, SageMaker Autopilot counts the number of unique entries and
+the number of unique words. The following string column would have
+\textbf{3} total entries, \textbf{2} unique entries, and \textbf{3}
+unique words.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+& String Column\tabularnewline
+\midrule
+\endhead
+\textbf{0} & ``red blue''\tabularnewline
+\textbf{1} & ``red blue''\tabularnewline
+\textbf{2} & ``red blue yellow''\tabularnewline
+\bottomrule
+\end{longtable}
+
+If the feature is \texttt{Categorical}, SageMaker Autopilot can look at
+the total number of unique entries and transform it using techniques
+such as one-hot encoding. If the field contains a \texttt{Text} string,
+we look at the number of unique words, or the vocabulary size, in the
+string. We can use the unique words to then compute text-based features,
+such as Term Frequency-Inverse Document Frequency (tf-idf).
+
+\textbf{Note:} If the number of unique values is too high, we risk data
+transformations expanding the dataset to too many features. In that
+case, SageMaker Autopilot will attempt to reduce the dimensionality of
+the post-processed data, such as by capping the number vocabulary words
+for tf-idf, applying Principle Component Analysis (PCA), or other
+dimensionality reduction techniques.
+
+The table below shows \textbf{25 of the 51} columns ranked by the number
+of unique entries.
+
+💡 Suggested Action Items
+
+\begin{itemize}
+\tightlist
+\item
+  Verify the number of unique values of a feature is as expected. One
+  explanation for unexpected number of unique values could be multiple
+  encodings of a value. For example \texttt{US} and \texttt{U.S.} will
+  count as two different words. You could correct the error at the data
+  source or pre-process your dataset in your S3 bucket.
+\item
+  If the number of unique values seems too high for Categorical
+  variables, investigate if multiple unique values can be grouped into a
+  smaller set of possible values.
+\end{itemize}
+
+Number of Unique Entries
+
+Number of Unique Words (if Text)
+
+card\_on\_dark\_web
+
+1
+
+n/a
+
+errors
+
+1
+
+n/a
+
+class
+
+2
+
+n/a
+
+Credit
+
+2
+
+n/a
+
+Male
+
+2
+
+n/a
+
+Female
+
+2
+
+n/a
+
+Swipe Transaction
+
+2
+
+n/a
+
+Online Transaction
+
+2
+
+n/a
+
+Chip Transaction
+
+2
+
+n/a
+
+YES
+
+2
+
+n/a
+
+NO
+
+2
+
+n/a
+
+Debit
+
+2
+
+n/a
+
+\ldots{}
+
+\ldots{}
+
+\ldots{}
+
+per\_capita\_income\_zipcode
+
+1237
+
+n/a
+
+zipcode
+
+1268
+
+n/a
+
+total\_debt
+
+1273
+
+n/a
+
+yearly\_income\_person
+
+1336
+
+n/a
+
+person
+
+1349
+
+n/a
+
+user
+
+1358
+
+n/a
+
+credit\_limit
+
+2984
+
+n/a
+
+merchant\_city
+
+4041
+
+n/a
+
+zip
+
+6810
+
+n/a
+
+merchant\_name
+
+7103
+
+n/a
+
+amount
+
+25942
+
+n/a
+
+828768
+
+n/a
+
+    \hypertarget{descriptive-stats}{%
+\subsubsection{Descriptive Stats}\label{descriptive-stats}}
+
+For each of the input features that has at least one numeric value,
+several descriptive statistics are computed from the data sample.
+
+SageMaker Autopilot may treat numerical features as \texttt{Categorical}
+if the number of unique entries is sufficiently low. For
+\texttt{Numerical} features, we may apply numerical transformations such
+as normalization, log and quantile transforms, and binning to manage
+outlier values and difference in feature scales.
+
+We found \textbf{44 of the 51} columns contained at least one numerical
+value. The table below shows the \textbf{25} columns which have the
+largest percentage of numerical values. Percentage of outliers is
+calculated only for columns which Autopilot detected to be of numeric
+type. Percentage of outliers is not calculated for the target column.
+
+💡 Suggested Action Items
+
+\begin{itemize}
+\tightlist
+\item
+  Investigate the origin of the data field. Are some values non-finite
+  (e.g.~infinity, nan)? Are they missing or is it an error in data
+  input?
+\item
+  Missing and extreme values may indicate a bug in the data collection
+  process. Verify the numerical descriptions align with expectations.
+  For example, use domain knowledge to check that the range of values
+  for a feature meets with expectations.
+\end{itemize}
+
+\% of Numerical Values
+
+Mean
+
+Median
+
+Min
+
+Max
+
+\% of Outlier Values
+
+class
+
+100.0\%
+
+0.11958
+
+0.0
+
+0.0
+
+1.0
+
+nan
+
+100.0\%
+
+5.17612e+05
+
+5.13247e+05
+
+0.0
+
+1.03512e+06
+
+0.0
+
+yearly\_income\_person
+
+100.0\%
+
+46978.1
+
+36983.0
+
+1.0
+
+2.80199e+05
+
+0.6
+
+total\_debt
+
+100.0\%
+
+58209.7
+
+49681.0
+
+0.0
+
+4.61854e+05
+
+0.0
+
+fico\_score
+
+100.0\%
+
+729.404
+
+727.0
+
+488.0
+
+850.0
+
+0.0
+
+num\_credit\_cards
+
+100.0\%
+
+4.41606
+
+5.0
+
+1.0
+
+9.0
+
+0.0
+
+hour
+
+100.0\%
+
+12.1926
+
+12.0
+
+0.0
+
+23.0
+
+0.0
+
+minutes
+
+100.0\%
+
+28.874
+
+29.0
+
+0.0
+
+59.0
+
+0.0
+
+acct\_open\_temp\_month
+
+100.0\%
+
+6.38079
+
+6.0
+
+1.0
+
+12.0
+
+0.0
+
+acct\_open\_year
+
+100.0\%
+
+2008.15
+
+2008.0
+
+1991.0
+
+2020.0
+
+0.0
+
+expires\_temp\_month
+
+100.0\%
+
+6.63814
+
+6.0
+
+1.0
+
+12.0
+
+0.0
+
+expires\_year
+
+100.0\%
+
+2020.4
+
+2022.0
+
+1997.0
+
+2024.0
+
+0.0
+
+NO
+
+100.0\%
+
+0.118607
+
+0.0
+
+0.0
+
+1.0
+
+0.0
+
+YES
+
+100.0\%
+
+0.881393
+
+1.0
+
+0.0
+
+1.0
+
+0.0
+
+Chip Transaction
+
+100.0\%
+
+0.249628
+
+0.0
+
+0.0
+
+1.0
+
+0.0
+
+Online Transaction
+
+100.0\%
+
+0.157651
+
+0.0
+
+0.0
+
+1.0
+
+0.0
+
+Swipe Transaction
+
+100.0\%
+
+0.592721
+
+1.0
+
+0.0
+
+1.0
+
+0.0
+
+Female
+
+100.0\%
+
+0.417495
+
+0.0
+
+0.0
+
+1.0
+
+0.0
+
+Male
+
+100.0\%
+
+0.582505
+
+1.0
+
+0.0
+
+1.0
+
+0.0
+
+Credit
+
+100.0\%
+
+0.303576
+
+0.0
+
+0.0
+
+1.0
+
+0.0
+
+Debit
+
+100.0\%
+
+0.540768
+
+1.0
+
+0.0
+
+1.0
+
+0.0
+
+per\_capita\_income\_zipcode
+
+100.0\%
+
+25436.4
+
+19382.0
+
+0.0
+
+1.63145e+05
+
+0.5
+
+longitude
+
+100.0\%
+
+-94.2162
+
+-91.12
+
+-159.41
+
+-68.67
+
+0.0
+
+latitude
+
+100.0\%
+
+36.2589
+
+35.98
+
+21.3
+
+48.53
+
+0.0
+
+mcc
+
+100.0\%
+
+5558.81
+
+5499.0
+
+1711.0
+
+9402.0
+
+0.0
+
+    \hypertarget{definitions}{%
+\subsection{Definitions}\label{definitions}}
+
+\hypertarget{feature-types}{%
+\subsubsection{Feature types}\label{feature-types}}
+
+\textbf{Numeric:} Numeric values, either floats or integers. For
+example: age, income. When training a machine learning model, it is
+assumed that numeric values are ordered and a distance is defined
+between them. For example, 3 is closer to 4 than to 10 and 3 \textless{}
+4 \textless{} 10.
+
+\textbf{Categorical:} The column entries belong to a set of unique
+values that is usually much smaller than number of rows in the dataset.
+For example, a column from datasets with 100 rows with the unique values
+``Dog'', ``Cat'' and ``Mouse''. The values could be numeric, textual, or
+combination of both. For example, ``Horse'', ``House'', 8, ``Love'' and
+3.1 are all valid values and can be found in the same categorical
+column. When manipulating column of categorical values, a machine
+learning model does not assume that they are ordered or that distance
+function is defined on them, even if all of the values are numbers.
+
+\textbf{Binary:} A special case of categorical column for which the
+cardinality of the set of unique values is 2.
+
+\textbf{Text:} A text column that contains many non-numeric unique
+values, often a human readable text. In extreme cases, all the elements
+of the column are unique, so no two entries are the same.
+
+\textbf{Datetime:} This column contains date and/or time information.
+
+\hypertarget{feature-statistics}{%
+\subsubsection{Feature statistics}\label{feature-statistics}}
+
+\textbf{Prediction power:} Prediction power of a column (feature) is a
+measure of how useful it is for predicting the target variable. It is
+measured using a stratified split into 80\%/20\% training and validation
+folds. We fit a model for each feature separately on the training fold
+after applying minimal feature pre-processing and measure prediction
+performance on the validation data. The scores are normalized to the
+range {[}0,1{]}. A higher prediction power score near 1 indicate that a
+column is more useful for predicting the target on its own. A lower
+score near 0 indicate that a column contains little useful information
+for predicting the target on their own. Although it is possible that a
+column that is uninformative on its own can be useful in predicting the
+target when used in tandem with other features, a low score usually
+indicates the feature is redundant. A score of 1 implies perfect
+predictive abilities, which often indicates an error called target
+leakage. The cause is typically a column present in dataset that is hard
+or impossible to obtain at prediction time, such as a duplicate of the
+target.
+
+\textbf{Outliers:} Outliers are detected using two statistics that are
+robust to outliers: median and robust standard deviation (RSTD). RSTD is
+derived by clipping the feature values to the range {[}5 percentile, 95
+percentile{]} and calculating the standard deviation of the clipped
+vector. All values larger than median + 5 * RSTD or smaller than median
+- 5 * RSTD are considered to be outliers.
+
+\textbf{Skew:} Skew measures the symmetry of the distribution and is
+defined as the third moment of the distribution divided by the third
+power of the standard deviation. The skewness of the normal distribution
+or any other symmetric distribution is zero. Positive values imply that
+the right tail of the distribution is longer than the left tail.
+Negative values imply that the left tail of the distribution is longer
+than the right tail. As a thumb rule, a distribution is considered
+skewed when the absolute value of the skew is larger than 3.
+
+\textbf{Kurtosis:} Pearson's kurtosis measures the heaviness of the tail
+of the distribution and is defined as the fourth moment of the
+distribution divided by the fourth power of the standard deviation. The
+kurtosis of the normal distribution is 3. Thus, kurtosis values lower
+than 3 imply that the distribution is more concentrated around the mean
+and the tails are lighter than the tails of the normal distribution.
+Kurtosis values higher than 3 imply heavier tails than the normal
+distribution or that the data contains outliers.
+
+\textbf{Missing Values:} Empty strings and strings composed of only
+white spaces are considered missing.
+
+\textbf{Valid values:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Numeric features / regression target:} All values that could
+  be casted to finite floats are valid. Missing values are not valid.
+\item
+  \textbf{Categorical / binary / text features / classification target:}
+  All values that are not missing are valid.
+\item
+  \textbf{Datetime features:} All values that could be casted to
+  datetime object are valid. Missing values are not valid.
+\end{itemize}
+
+\textbf{Invalid values:} values that are either missing or that could
+not be casted to the desired type. See the definition of valid values
+for more information
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
